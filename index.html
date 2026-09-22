@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Real-Time Force Regulation for Whole-Hand Dexterous Grasping</title>
+  <meta name="description" content="Whole-hand contact estimation from geometry and proprioception, with real-time QP force allocation, on a 27-DoF arm-hand system. No tactile sensing required.">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Real-Time Force Regulation for Whole-Hand Dexterous Grasping">
+  <meta property="og:description" content="The hand as a geometric contact sensor: contacts on every link from a tracked object mesh and joint angles, forces reallocated every control cycle.">
+  <meta property="og:url" content="https://sangminkim-99.github.io/reactive-grasp-whole-hand/">
+  <meta property="og:image" content="https://sangminkim-99.github.io/reactive-grasp-whole-hand/static/videos/real_pringles.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" type="image/png" sizes="32x32" href="./static/images/favicon-32.png?v=2">
+  <link rel="icon" type="image/png" sizes="64x64" href="./static/images/favicon.png?v=2">
+  <link rel="apple-touch-icon" href="./static/images/apple-touch-icon.png?v=2">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&family=Roboto+Mono:wght@400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.1/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css?v=19">
+</head>
+<body>
+
+<!-- ============================ HERO: sticky stage that collapses into a slider ============================ -->
+<section class="hero-stage" id="top">
+  <div class="hero-sticky">
+    <div class="hero-copy" id="hero-copy">
+      <div class="container has-text-centered">
+        <h1 class="hero-title">Real-Time Force Regulation for Whole-Hand Dexterous Grasping</h1>
+        <p class="hero-venue">Preprint &nbsp;·&nbsp; 2026</p>
+        <a class="hero-scroll" href="#paper" aria-label="Scroll to content"><i class="fa-solid fa-chevron-down"></i></a>
+      </div>
+    </div>
+
+    <div class="slider" id="hero-slider" aria-roledescription="carousel" aria-label="Real-world runs">
+      <div class="slide is-active" data-label="Pringles" data-caption="Full pipeline, 59 s, 16 perturbations.">
+        <video muted playsinline preload="metadata" poster="./static/videos/real_pringles.jpg?v=3" data-src="./static/videos/real_pringles.mp4?v=3"
+               aria-label="A 27-DoF arm-hand system reaches for, grasps, loses and regrasps a Pringles can while a human disturbs it."></video>
+        <div class="slide-shade"></div>
+      </div>
+      <div class="slide" data-label="Small box" data-caption="Full pipeline, 48 s, 31 perturbations.">
+        <video muted playsinline preload="none" poster="./static/videos/real_smallbox.jpg?v=3" data-src="./static/videos/real_smallbox.mp4?v=3" aria-label="Small box run."></video>
+      </div>
+      <div class="slide" data-label="Large box" data-caption="Full pipeline, 94 s, 31 perturbations.">
+        <video muted playsinline preload="none" poster="./static/videos/real_largebox.jpg?v=3" data-src="./static/videos/real_largebox.mp4?v=3" aria-label="Large box run."></video>
+      </div>
+
+      <button class="slider-nav prev" type="button" aria-label="Previous video"><i class="fa-solid fa-chevron-left"></i></button>
+      <button class="slider-nav next" type="button" aria-label="Next video"><i class="fa-solid fa-chevron-right"></i></button>
+
+      <div class="slide-meta" id="slide-meta">
+        <div class="slider-dots" id="slider-dots" role="tablist"></div>
+        <p class="slide-caption" id="slide-caption"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ TITLE / AUTHORS ============================ -->
+<section class="section paper-head" id="paper">
+  <div class="container is-max-desktop has-text-centered">
+    <h1 class="title publication-title">Real-Time Force Regulation for Whole-Hand Dexterous Grasping</h1>
+    <p class="publication-venue">Preprint &nbsp;·&nbsp; 2026</p>
+
+    <div class="publication-authors">
+      <span class="author-block"><a href="https://sangminkim-99.github.io/">Sang Min Kim</a><sup>1,†</sup>,</span>
+      <span class="author-block"><a href="https://alex-alexiev.github.io/">Alex Alexiev</a><sup>2</sup>,</span>
+      <span class="author-block"><a href="https://tzuyuan.github.io/">Tzu-Yuan Lin</a><sup>2</sup>,</span>
+      <span class="author-block"><a href="https://biomimetics.mit.edu/">Sangbae Kim</a><sup>2,*</sup>,</span>
+      <span class="author-block"><a href="https://3d.snu.ac.kr/">Young Min Kim</a><sup>1,*</sup>,</span>
+      <span class="author-block"><a href="https://rophi-lab.github.io/people.html">Yonghyeon Lee</a><sup>2,*</sup></span>
+    </div>
+
+    <div class="publication-institutes">
+      <span class="inst-block"><sup>1</sup>Seoul National University</span>
+      <span class="inst-block"><sup>2</sup>Massachusetts Institute of Technology</span>
+    </div>
+    <div class="publication-notes">
+      <span><sup>†</sup>Work done while visiting MIT</span>
+      <span><sup>*</sup>Co-corresponding authors</span>
+    </div>
+
+    <div class="affiliation-logos">
+      <a href="https://3d.snu.ac.kr" target="_blank" rel="noopener" class="logo-slot">
+        <img src="./static/images/3dv.png" alt="Seoul National University 3D Vision Lab" class="logo-snu">
+      </a>
+      <a href="https://www.mit.edu" target="_blank" rel="noopener" class="logo-slot">
+        <img src="./static/images/mit_wordmark.svg" alt="Massachusetts Institute of Technology" class="logo-mit">
+      </a>
+    </div>
+
+    <div class="link-blocks">
+      <a class="button link-button is-rounded is-disabled" href="#" aria-disabled="true" title="Coming soon">
+        <span class="icon"><i class="ai ai-arxiv"></i></span><span>arXiv (Soon)</span>
+      </a>
+      <a class="button link-button is-rounded is-disabled" href="#" aria-disabled="true" title="Coming soon">
+        <span class="icon"><i class="fa-brands fa-github"></i></span><span>Code (Soon)</span>
+      </a>
+    </div>
+
+    <p class="tldr">
+      <strong>TL;DR</strong> &nbsp;Whole-hand force regulation without tactile sensing: contacts on every hand link are estimated from the
+      tracked object model and joint angles, and the contact forces are re-solved every control cycle as the contacts change.
+    </p>
+  </div>
+</section>
+
+<!-- ============================ HIGHLIGHTS ============================ -->
+<section class="section is-feature">
+  <div class="container is-max-desktop">
+    <div class="columns is-variable is-4">
+      <div class="column">
+        <div class="highlight-card">
+          <div class="hl-icon"><i class="fa-solid fa-hand"></i></div>
+          <h3>The hand as a contact sensor</h3>
+          <p>About 3,000 points on the hand links are queried against the object's signed distance field each cycle. Points within 1&nbsp;cm are contacts. Under 1&nbsp;ms on GPU.</p>
+        </div>
+      </div>
+      <div class="column">
+        <div class="highlight-card">
+          <div class="hl-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+          <h3>Forces re-solved every cycle</h3>
+          <p>A convex QP allocates contact forces under friction, a minimum squeeze, torque limits and an actuation-consistency constraint. Solved at about 84&nbsp;Hz.</p>
+        </div>
+      </div>
+      <div class="column">
+        <div class="highlight-card">
+          <div class="hl-icon"><i class="fa-solid fa-rotate"></i></div>
+          <h3>Reach, grasp, hold, regrasp</h3>
+          <p>With reactive reaching in front, a 27-DoF arm-hand system grasps a moving object, holds it through pushes, and regrasps after losing it.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ ABSTRACT ============================ -->
+<section class="section" id="abstract">
+  <div class="container is-max-desktop">
+    <h2 class="section-title">Abstract</h2>
+    <div class="content has-text-justified abstract-text">
+      <p>Robust dexterous grasping requires maintaining physical stability despite contacts interactively evolving across the entire hand.
+      A precomputed force distribution can easily fail under object motion, modeling errors, or external disturbances.
+      In this paper, we present a framework for real-time force regulation over dynamically changing whole-hand contacts.
+      Our method geometrically estimates contacts across all hand links using a tracked object model and proprioception, without requiring
+      tactile sensing at those contacts. It repeatedly recomputes the desired contact-force distribution subject to friction constraints,
+      actuator limits, and an actuation-consistency constraint motivated by classical whole-limb force analysis.
+      We integrate this force-regulation controller with reactive reaching, enabling the hand to acquire a grasp, maintain it under disturbances,
+      and regrasp after losing the object. Simulation experiments without gravity demonstrate improved grasp retention over fixed-allocation and
+      fingertip-only execution under controlled perturbations, while real-world experiments on a 27-DoF arm-hand system demonstrate grasp
+      maintenance and recovery under human-applied disturbances as contacts evolve across the whole hand.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ METHOD ============================ -->
+<section class="section is-feature" id="method">
+  <div class="container is-max-desktop">
+    <h2 class="section-title">Method</h2>
+    <p class="section-lead">Every control cycle: estimate contacts from geometry, re-solve the forces, repeat.</p>
+  </div>
+
+  <div class="container is-max-desktop">
+    <figure class="fig">
+      <video class="lazy-video" muted loop playsinline controls preload="none" poster="./static/videos/method.jpg?v=3"
+             data-src="./static/videos/method.mp4?v=3"
+             aria-label="Method overview: signed distance field of the object, contact estimation on the hand links, force allocation, and real-time regulation while the object moves.">
+      </video>
+      <figcaption class="fig-caption has-text-centered">
+        <span class="tag-label">Method overview.</span>
+        A precomputed signed distance field gives contact locations and normals on every link from the joint states and tracked object pose.
+        Contact forces are then allocated for zero net wrench, and both steps repeat in real time.
+      </figcaption>
+    </figure>
+
+    <figure class="fig">
+      <img src="./static/images/fig1.png" alt="Snapshots of the hand holding an object under rod perturbations, with commanded contact forces drawn as arrows, and palmar/dorsal hand renderings colored by distance to the nearest contact." loading="lazy">
+      <figcaption class="fig-caption has-text-centered">
+        <span class="tag-label">Whole-hand contacts on hardware.</span>
+        Arrows: commanded contact forces while a rod pushes the object. Hands: distance to the nearest contact. Contacts appear on the fingertips, finger sides and the back of the fingers.
+      </figcaption>
+    </figure>
+  </div>
+
+  <div class="container is-max-desktop">
+    <div class="columns is-variable is-5 method-steps">
+      <div class="column">
+        <div class="step-num">1</div>
+        <h3>Whole-hand contact estimation</h3>
+        <p>The object mesh comes from CAD or a short RGB-D scan; its SDF is precomputed once. Each cycle, candidate points on every link are placed with the tracked pose and joint angles, and the closest ones per link become contacts. The palm counts too.</p>
+      </div>
+      <div class="column">
+        <div class="step-num">2</div>
+        <h3>Real-time force allocation</h3>
+        <p>A QP minimizes the residual object wrench under friction pyramids, a minimum normal force, joint-torque limits and an actuation-consistency constraint that removes forces the finger joints cannot produce.</p>
+      </div>
+      <div class="column">
+        <div class="step-num">3</div>
+        <h3>Integration with reactive reaching</h3>
+        <p>Reactive reaching drives the fingertips and palm to a grasp that follows the tracked object. Thumb plus two fingers in contact hands over to force regulation; if the object is lost, control returns to reaching.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ SIMULATION ============================ -->
+<section class="section" id="simulation">
+  <div class="container is-max-desktop">
+    <h2 class="section-title">Simulation</h2>
+    <p class="section-lead">
+      MuJoCo, 79 YCB objects, 10 power grasps each, gravity off. Baselines allocate forces once at initialization and hold them as fixed torques (feedforward) or impedance targets.
+    </p>
+  </div>
+
+  <div class="container is-max-desktop">
+    <figure class="fig protocol-fig">
+      <img src="./static/images/fig2.png" alt="Perturbation-test protocol: grasp initialization, force regulation, six-axis load test, pose perturbation, release and retest." loading="lazy">
+      <figcaption class="fig-caption has-text-centered">
+        <span class="tag-label">Perturbation protocol.</span>
+        Regulate the grasp (a, b), apply a load of 10% of the object weight along ±x, ±y, ±z (c), rotate the object by θ about a random axis (d), and repeat the load test (e).
+      </figcaption>
+    </figure>
+
+    <figure class="fig chart chart-wide">
+      <img src="./static/images/fig3.png" alt="Success rate binned by number of ground-truth contacts for 790 grasps." loading="lazy">
+      <figcaption class="fig-caption has-text-centered">
+        <span class="tag-label">Multi-link contacts.</span> Success over 790 grasps, binned by number of contacts. The gap is largest with 3 to 5 contacts.
+      </figcaption>
+    </figure>
+
+    <div class="columns is-variable is-5 chart-row">
+      <div class="column is-half">
+        <figure class="fig chart">
+          <img src="./static/images/fig4.png" alt="Success rate versus target perturbation angle for feedforward, impedance, fingertip-only and ours." loading="lazy">
+          <figcaption class="fig-caption">
+            <span class="tag-label">Dynamic perturbation.</span> Ours stays above both baselines at every angle; whole-hand contacts beat fingertip-only, 88.6% vs 72.4% at 90°.
+          </figcaption>
+        </figure>
+      </div>
+      <div class="column is-half">
+        <figure class="fig chart">
+          <img src="./static/images/fig6.png" alt="Success rate under synthetic object pose error for three contact thresholds and the feedforward baseline." loading="lazy">
+          <figcaption class="fig-caption">
+            <span class="tag-label">Object pose error.</span> With up to 30° and 5&nbsp;mm of pose offset, feedforward drops to 54% while ours stays at 87% to 93%.
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <h3 class="sub-title">Ablations</h3>
+    <div class="columns is-variable is-5 chart-row">
+      <div class="column is-half">
+        <figure class="fig chart">
+          <img src="./static/images/fig7.png" alt="Success rate and compute rate versus maximum contacts per link K." loading="lazy">
+          <figcaption class="fig-caption"><span class="tag-label">Contacts per link.</span> More points per link means a slower QP: 227&nbsp;Hz at <em>K</em>=1, 66&nbsp;Hz at <em>K</em>=7. Success peaks at <em>K</em>=5.</figcaption>
+        </figure>
+      </div>
+      <div class="column is-half">
+        <figure class="fig chart">
+          <img src="./static/images/fig5.png" alt="Desired and measured contact forces with and without the actuation-consistency constraint." loading="lazy">
+          <figcaption class="fig-caption"><span class="tag-label">Actuation consistency.</span> Without it, a 0.43&nbsp;N net force is left on the object (red). With it, the net force is nearly zero.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ REAL WORLD ============================ -->
+<section class="section is-feature" id="realworld">
+  <div class="container is-max-desktop">
+    <h2 class="section-title">Real world</h2>
+    <p class="section-lead">
+      A 7-DoF Flexiv Rizon 4 arm and a 20-DoF Robotis 5F hand with one RealSense D455 and no tactile sensing. Objects are scanned by hand and tracked at 30&nbsp;Hz.
+      The three runs play, uncut, in the viewer at the <a href="#top">top of the page</a>.
+    </p>
+  </div>
+
+  <div class="container is-max-desktop">
+    <figure class="fig">
+      <img src="./static/images/fig8.png" alt="Experimental setup: 27-DoF arm-hand robot, RealSense camera and test objects on a table." loading="lazy">
+      <figcaption class="fig-caption has-text-centered"><span class="tag-label">Setup.</span> 27-DoF robot, one RGB-D camera, i9-13900K and RTX 4090.</figcaption>
+    </figure>
+
+    <table class="table rw-table">
+      <caption>Full-pipeline runs. Unrecovered losses left the arm workspace.</caption>
+      <thead><tr><th>Object</th><th>Duration</th><th>Perturbations</th><th>Losses</th><th>Recovered</th></tr></thead>
+      <tbody>
+        <tr><td>Pringles</td><td>59 s</td><td>16</td><td>3</td><td>3 / 3</td></tr>
+        <tr><td>Small box</td><td>48 s</td><td>31</td><td>2</td><td>1 / 2</td></tr>
+        <tr><td>Large box</td><td>94 s</td><td>31</td><td>3</td><td>2 / 3</td></tr>
+      </tbody>
+    </table>
+    <p class="rw-note">78 perturbations over about 200&nbsp;s; six of eight losses recovered without intervention.</p>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================ FUN GRASP ============================ -->
+<section class="section" id="fungrasp">
+  <div class="container is-max-desktop">
+    <h2 class="section-title">Beyond the reach of a grasp taxonomy</h2>
+    <p class="section-lead">
+      Tactile skins sense only where they are mounted, and grasp priors place contacts where a taxonomy expects them.
+      Our estimator searches the whole hand surface, so neither assumption is needed: here the fingers alternate in front of and behind the can,
+      and the ones holding it with their dorsal surface are regulated through the same contact Jacobian.
+    </p>
+  </div>
+  <div class="container is-max-desktop">
+    <figure class="fig fun-fig">
+      <video class="lazy-video" muted loop playsinline controls preload="none" poster="./static/videos/real_dorsal.jpg?v=4" data-src="./static/videos/real_dorsal.mp4?v=4"
+             aria-label="Close-up of the manually posed alternating grasp being pushed with a rod; palmar and dorsal hand renderings show the estimated contacts, including on the back of the fingers."></video>
+      <div class="fun-legend" aria-hidden="true">
+        <span>Distance to object surface</span>
+        <span class="legend-scale"><span class="legend-bar"></span><span class="legend-ticks"><span>0</span><span>10</span><span>20 mm</span></span></span>
+      </div>
+      <figcaption class="fig-caption has-text-centered">
+        <span class="tag-label">A grasp beyond the taxonomy.</span>
+          Right: palmar and dorsal views colored by distance to the object. The fingers behind the can register contact on their dorsal surface,
+          and the grasp holds while a rod pushes it.
+        </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================ BIBTEX ============================ -->
+<section class="section" id="bibtex">
+  <div class="container is-max-desktop">
+    <h2 class="section-title">BibTeX</h2>
+    <div class="citation-box">
+<pre id="bib-text">TBA</pre>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ FOOTER ============================ -->
+<footer class="footer">
+  <div class="container is-max-desktop has-text-centered">
+    <p>This website is licensed under a <a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="license">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+    Built with <a href="https://bulma.io">Bulma</a>; layout inspired by the <a href="https://nerfies.github.io">Nerfies</a> template.</p>
+  </div>
+</footer>
+
+<script src="./static/js/index.js?v=12"></script>
+</body>
+</html>
