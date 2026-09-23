@@ -176,12 +176,19 @@ body {
 .publication-notes span { display: inline-block; margin: 0 .6rem; }
 
 .affiliation-logos {
-  display: flex; justify-content: center; align-items: center; gap: 2.5rem;
+  display: flex; justify-content: center; align-items: center; gap: 2rem;
   margin: 1.4rem auto .4rem; flex-wrap: wrap;
 }
 .logo-slot { display: inline-flex; align-items: center; }
 .affiliation-logos img { height: 54px; width: auto; object-fit: contain; }
-@media (max-width: 768px) { .affiliation-logos { gap: 1.5rem; } .affiliation-logos img { height: 40px; } }
+.affiliation-logos .logo-yonsei-emblem { height: 50px; margin-right: .55rem; }
+.affiliation-logos .logo-rophi { height: 42px; }
+@media (max-width: 768px) {
+  .affiliation-logos { gap: 1.5rem; }
+  .affiliation-logos img { height: 40px; }
+  .affiliation-logos .logo-yonsei-emblem { height: 36px; margin-right: .4rem; }
+  .affiliation-logos .logo-rophi { height: 30px; }
+}
 
 .link-blocks { margin-top: 1.4rem; display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem; }
 .link-button {
