@@ -182,11 +182,15 @@ body {
 .logo-slot { display: inline-flex; align-items: center; }
 .affiliation-logos img { height: 54px; width: auto; object-fit: contain; }
 .affiliation-logos .logo-yonsei-emblem { height: 50px; margin-right: .55rem; }
+.affiliation-logos .logo-mit { height: 40px; margin-right: .7rem; }
+.affiliation-logos .logo-biomimetics { height: 56px; }
 .affiliation-logos .logo-rophi { height: 42px; }
 @media (max-width: 768px) {
   .affiliation-logos { gap: 1.5rem; }
   .affiliation-logos img { height: 40px; }
   .affiliation-logos .logo-yonsei-emblem { height: 36px; margin-right: .4rem; }
+  .affiliation-logos .logo-mit { height: 29px; margin-right: .5rem; }
+  .affiliation-logos .logo-biomimetics { height: 40px; }
   .affiliation-logos .logo-rophi { height: 30px; }
 }
 
